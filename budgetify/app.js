@@ -45,13 +45,14 @@ var budgetController = (
 		}
 
 		var deleteItemFromBudget = function(ID , type){
+			print(type)
 			var arr = data.allItems[type].map((curr)=>{
 				return curr.id;
 			});
 			index = arr.indexOf(ID);
 
 			if(index !== -1){
-				arr.splice
+				data.allItems[type].splice(index , 1);
 			}
 		}
 
@@ -76,7 +77,7 @@ var budgetController = (
 			},
 			updateExpIncAndbudget : updateExpIncAndbudget ,
 			showItem : showItem  ,
-			deleteItemFromBudget : deleteItem 
+			deleteItemFromBudget : deleteItemFromBudget
 		}
 	}
 )()
@@ -175,8 +176,24 @@ var appController = (
 					cntrlAddItem();
 				}
 			});
-			document.querySelector(DOM.container).addEventListener('click' , deleteItem) ;
+			console.log("This is the dom container ")
+			console.log(document.querySelector(DOM.container))
+			//document.querySelector(DOM.container).addEventListener('click' , deleteItem) ;
+			document.querySelector(DOM.container).addEventListener('click' , testing) ;
 		} 
+
+		var testing = function(event){
+			var splitTypeID , type , id ;
+			console.log("This is the testing function ....");
+			splitTypeID = event.target.parentNode.parentNode.parentNode.parentNode.id.split("-");
+			console.log(splitTypeID);
+			type = splitTypeID[0];
+			type === "income" ? type = "inc" : type = "exp";
+			console.log(type)
+			id = Number(splitTypeID[1])
+			budgetCntl.deleteItemFromBudget(id , type)
+			budgetCntl.showItem()
+		}
 
 		var cntrlAddItem = function(){
 
@@ -211,11 +228,14 @@ var appController = (
 
 		var deleteItem = function(event){
 			var splitID , type , ID;
-			splitID = event.target.parentNode.parentNode.parentNode.parentNode.id.split("-") ;
-			type = splitID[0];
-			ID = splitID[1];
+			console.log(event.target)
+			// splitID = event.target.parentNode.parentNode.parentNode.parentNode.id.split("-") ;
+			// type = splitID[0];
+			// ID = splitID[1];
 
 			// Delete the item from the datastructure ....
+			print(`This is the ID ${ID} and type ${type}`)
+			//budgetCntl.deleteItemFromBudget(ID , type)
 		}
 
 		return {
